@@ -2,8 +2,8 @@ import React from 'react';
 
 const Header = () => {
     return (
-        <header>
-            <h1>TODO-LIST</h1>
+        <header className="App">
+            <h1>Danh sách công việc</h1>
         </header>
     )
 }
