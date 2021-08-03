@@ -5,7 +5,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 const TodoItem = (props) => {
     const todo = props.todoProps;
     const markComplete = props.markCompleteFunc;
-    
+    const deleteTodo = props.deleteTodoFunc;
+
     const todoItemStyle = {
         textDecoration: todo.completed ? 'line-through' : 'none'
     }
@@ -20,7 +21,7 @@ const TodoItem = (props) => {
                 <Button className="btn" variant="contained" >
                     Sửa
                 </Button>
-                <Button className="btn" variant="contained" color="secondary">
+                <Button onClick={() => deleteTodo(todo.id)} className="btn" variant="contained" color="secondary">
                     Xóa
                 </Button>
             </div>
@@ -32,6 +33,7 @@ const TodoItem = (props) => {
 TodoItem.propTypes = {
     todoProps: PropTypes.object.isRequired,
     markCompleteFunc: PropTypes.func.isRequired,
+    deleteTodoFunc: PropTypes.func.isRequired,
 }
 
 export default TodoItem;

@@ -2,11 +2,17 @@
   text-align: center;
 }
 
+.search {
+  margin: 20px 30px;
+}
+
+.search button {
+  margin: 0px 30px;
+}
 .todo-item {
   display: flex;
   justify-content: space-between;
   border: 0.5px solid #ccc;
-  
 }
 
 .todo-start {
