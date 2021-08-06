@@ -1,26 +1,22 @@
-import React, { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid'
+import React, { useState, useEffect } from 'react';
 import TodoItem from './TodoItem';
 import AddTodo from './AddTodo'
+import axios from 'axios';
 const Todos = () => {
-    const [todosState, setTodosState] = useState([
-        {
-            id: uuidv4(),
-            title: 'việc 1',
-            completed: true,
-        },
-        {
-            id: uuidv4(),
-            title: 'việc 2',
-            completed: false,
-        },
-        {
-            id: uuidv4(),
-            title: 'việc 3',
-            completed: false,
-        }
-    ]);
+    const [todosState, setTodosState] = useState([]);
 
+    useEffect(() => {
+        const getTodos = async () => {
+            try {
+                const res = await axios.get('http://localhost:8081/todo');
+                // console.log(res.data)
+                setTodosState(res.data);
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+        getTodos();
+    }, [])
     const markComplete = id => {
         const newTodos = todosState.map(todo => {
             if (todo.id === id) todo.completed = !todo.completed;
@@ -30,15 +26,24 @@ const Todos = () => {
         setTodosState(newTodos);
     }
 
-    const deleteTodo = id => {
-        const newTodos = todosState.filter(todo => todo.id !== id);
-        setTodosState(newTodos);
+    const deleteTodo = async id => {
+        try {
+            await axios.delete(`http://localhost:8081/todo/${id}`);
+            const newTodos = todosState.filter(todo => todo.id !== id);
+            setTodosState(newTodos);
+          } catch (error) {
+            console.log(error.message);
+          }
     }
 
-    const addTodo = title => {
-        const newTodo = { id: uuidv4(), title: title, completed: false };
-        const newTodos = [...todosState, newTodo];
-        setTodosState(newTodos);
+    const addTodo = async title => {
+        try {
+            const res = await axios.post('http://localhost:8081/todo', { title: title, completed: false });
+            const newTodos = [...todosState, res.data]
+            setTodosState(newTodos);
+        } catch (error) {
+            console.error(error.message);
+        }
     }
     return (
         <div>
